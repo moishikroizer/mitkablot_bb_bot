@@ -3,8 +3,8 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, MessageHandler, filters
 
 # מזהים מהסביבה
-BOTLOG_CHANNEL = '@botlog_1221'  # הערוץ לפרסום
-ADMIN_USERNAME = '@moishi_5104'  # מנהל לקבלת שם המשתמש
+BOTLOG_CHANNEL = '@botlog_1221'
+ADMIN_USERNAME = '@moishi_5104'
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
@@ -12,11 +12,12 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # פרסום בערוץ
     try:
+        channel_text = "📥 הודעה חדשה שהתקבלה:
+
+{}".format(message)
         await context.bot.send_message(
             chat_id=BOTLOG_CHANNEL,
-            text=f"📥 הודעה חדשה שהתקבלה:
-
-{message}"
+            text=channel_text
         )
     except Exception as e:
         print("שגיאה בשליחת הודעה לערוץ:", e)
@@ -24,9 +25,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # שליחת שם המשתמש למנהל
     try:
         username = user.username or f"ID:{user.id}"
+        admin_text = "התקבלה הודעה מ: @{}".format(username)
         await context.bot.send_message(
             chat_id=ADMIN_USERNAME,
-            text=f"התקבלה הודעה מ: @{username}"
+            text=admin_text
         )
     except Exception as e:
         print("שגיאה בשליחת שם משתמש למנהל:", e)
